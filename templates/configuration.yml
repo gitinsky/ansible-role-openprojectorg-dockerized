@@ -1,0 +1,9 @@
+production:                          #main level
+  email_delivery_method: :smtp       #settings for the production environment
+  smtp_address: smtp.gmail.com
+  smtp_port: 587
+  smtp_domain: smtp.gmail.com
+  smtp_user_name: {{ openproject_smtp_user_name }}
+  smtp_password: {{ openproject_smtp_password }}
+  smtp_enable_starttls_auto: true
+  smtp_authentication: plain

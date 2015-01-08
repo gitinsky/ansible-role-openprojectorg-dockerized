@@ -1,0 +1,34 @@
+---
+- name: make a build dir
+  file: state=directory name=/root/openprojectorg-dockerized
+
+- name: put Dockerfile
+  template: src=Dockerfile dest=/root/openprojectorg-dockerized/Dockerfile
+
+- name: put unicorn.rb
+  template: src=unicorn.rb dest=/root/openprojectorg-dockerized/unicorn.rb
+
+- name: put unicorn-eye.rb
+  template: src=unicorn-eye.rb dest=/root/openprojectorg-dockerized/unicorn-eye.rb
+
+- name: put database.yml
+  template: src=database.yml dest=/root/openprojectorg-dockerized/database.yml
+
+- name: put configuration.yml
+  template: src=configuration.yml dest=/root/openprojectorg-dockerized/configuration.yml
+
+- name: build a Docker image for Openproject.org
+  command: docker build -t gitinsky/openprojectorg:0.1.0 --rm /root/openprojectorg-dockerized
+
+- name: check if a container is started
+  command: bash -c "docker ps | grep openprojectorg"
+  ignore_errors: True
+  register: result
+
+#- name: chown content volume
+#  command: chown -R {{ apache_uid }}:{{ apache_gid }} {{ ext_apache2_volume }}
+#  when: result|failed
+
+- name: start a container
+  command: docker run -d -name openprojectorg --link mysql:db gitinsky/openprojectorg:0.1.0
+  when: result|failed
