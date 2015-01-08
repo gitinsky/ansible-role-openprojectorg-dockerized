@@ -9,12 +9,13 @@ Eye.application 'openproject' do
   process :unicorn do
     pid_file '/home/openproject/openproject/tmp/pids/unicorn.pid'
     env 'RAILS_ENV' => 'production'
+    pre_start_command '/root/install.sh'
     start_command "sudo -i -u openproject bash -c \"source /etc/profile.d/rvm.sh && cd /home/openproject/openproject && bundle exec unicorn_rails -D -E production -c ./config/unicorn.rb\""
     stop_command 'kill -QUIT {PID}'
     restart_command 'kill -USR2 {PID}'
     stdall '/home/openproject/openproject/log/unicorn-stdall.log'
 
-    start_timeout 10.seconds
+    start_timeout 30.seconds
     stop_timeout 5.seconds
 
 #    monitor_children do

@@ -6,7 +6,7 @@ user "openproject"
 preload_app true
 timeout 480
 #listen "#{WORK_DIR}/tmp/sockets/unicorn.sock", :backlog => 4096
-listen "127.0.0.1:80", :backlog => 4096
+listen "0.0.0.0:8080", :backlog => 4096
 
 pid "#{WORK_DIR}/tmp/pids/#{PREFIX}unicorn.pid"
 

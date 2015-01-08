@@ -17,6 +17,9 @@
 - name: put configuration.yml
   template: src=configuration.yml dest=/root/openprojectorg-dockerized/configuration.yml
 
+- name: put install.sh
+  template: src=install.sh dest=/root/openprojectorg-dockerized/install.sh mode=0755
+
 - name: build a Docker image for Openproject.org
   command: docker build -t gitinsky/openprojectorg:0.1.0 --rm /root/openprojectorg-dockerized
 
@@ -30,5 +33,5 @@
 #  when: result|failed
 
 - name: start a container
-  command: docker run -d -name openprojectorg --link mysql:db gitinsky/openprojectorg:0.1.0
+  command: docker run -d -name openprojectorg -p=8080:8080 --link mysql:db gitinsky/openprojectorg:0.1.0
   when: result|failed
